@@ -1,0 +1,12 @@
+const express = require('express');
+const router = express.Router();
+const { createEscrowOrder, verifyEscrowPayment, releasePayment, getPaymentHistory, getEarningsSummary, buyConnects, verifyConnectsPayment } = require('../controllers/payments');
+const { protect, authorize } = require('../middleware/auth');
+router.post('/escrow/create', protect, authorize('employer'), createEscrowOrder);
+router.post('/escrow/verify', protect, verifyEscrowPayment);
+router.post('/release/:paymentId', protect, authorize('employer'), releasePayment);
+router.get('/history', protect, getPaymentHistory);
+router.get('/earnings', protect, authorize('freelancer'), getEarningsSummary);
+router.post('/connects/buy', protect, authorize('freelancer'), buyConnects);
+router.post('/connects/verify', protect, authorize('freelancer'), verifyConnectsPayment);
+module.exports = router;

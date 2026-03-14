@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const { applyToProject, getProjectApplications, getMyApplications, updateApplicationStatus, withdrawApplication } = require('../controllers/applications');
+const { protect, authorize } = require('../middleware/auth');
+router.post('/project/:projectId', protect, authorize('freelancer'), applyToProject);
+router.get('/project/:projectId', protect, getProjectApplications);
+router.get('/my', protect, authorize('freelancer'), getMyApplications);
+router.put('/:id/status', protect, authorize('employer'), updateApplicationStatus);
+router.put('/:id/withdraw', protect, authorize('freelancer'), withdrawApplication);
+module.exports = router;

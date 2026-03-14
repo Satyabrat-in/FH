@@ -1,0 +1,13 @@
+const express = require('express');
+const router = express.Router();
+const { getFreelancers, getFreelancerProfile, updateFreelancerProfile, getEmployerProfile, updateEmployerProfile, getDashboardStats, getSavedJobs, toggleSaveJob } = require('../controllers/users');
+const { protect, authorize } = require('../middleware/auth');
+router.get('/freelancers', getFreelancers);
+router.get('/freelancer/:userId', getFreelancerProfile);
+router.put('/freelancer/profile', protect, authorize('freelancer'), updateFreelancerProfile);
+router.get('/employer/:userId', getEmployerProfile);
+router.put('/employer/profile', protect, authorize('employer'), updateEmployerProfile);
+router.get('/dashboard/stats', protect, getDashboardStats);
+router.get('/saved-jobs', protect, authorize('freelancer'), getSavedJobs);
+router.put('/saved-jobs/:jobId', protect, authorize('freelancer'), toggleSaveJob);
+module.exports = router;

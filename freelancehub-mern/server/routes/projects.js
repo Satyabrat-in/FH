@@ -1,0 +1,14 @@
+const express = require('express');
+const router = express.Router();
+const { getProjects, getProject, createProject, updateProject, deleteProject, getMyProjects, awardProject, getProjectMatches, getRecommendedProjects } = require('../controllers/projects');
+const { protect, authorize, optionalAuth } = require('../middleware/auth');
+router.get('/', optionalAuth, getProjects);
+router.get('/my', protect, getMyProjects);
+router.get('/recommended', protect, authorize('freelancer'), getRecommendedProjects);
+router.get('/:id', optionalAuth, getProject);
+router.post('/', protect, authorize('employer'), createProject);
+router.put('/:id', protect, authorize('employer', 'admin'), updateProject);
+router.delete('/:id', protect, authorize('employer', 'admin'), deleteProject);
+router.post('/:id/award', protect, authorize('employer'), awardProject);
+router.get('/:id/matches', protect, authorize('employer'), getProjectMatches);
+module.exports = router;

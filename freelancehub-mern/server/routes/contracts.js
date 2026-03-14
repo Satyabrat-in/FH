@@ -1,0 +1,13 @@
+const express = require('express');
+const router = express.Router();
+const { getMyContracts, getContract, acceptContract, submitMilestone, submitFullWork, requestRevision, logTime, createDirectContract } = require('../controllers/contracts');
+const { protect, authorize } = require('../middleware/auth');
+router.get('/', protect, getMyContracts);
+router.get('/:id', protect, getContract);
+router.put('/:id/accept', protect, authorize('freelancer'), acceptContract);
+router.post('/:id/milestone/submit', protect, authorize('freelancer'), submitMilestone);
+router.post('/:id/submit', protect, authorize('freelancer'), submitFullWork);
+router.post('/:id/revision', protect, authorize('employer'), requestRevision);
+router.post('/:id/time', protect, authorize('freelancer'), logTime);
+router.post('/direct', protect, authorize('employer'), createDirectContract);
+module.exports = router;

@@ -1,0 +1,12 @@
+const express = require('express');
+const router = express.Router();
+const { getGigs, getGig, createGig, updateGig, deleteGig, getMyGigs, orderGig } = require('../controllers/gigs');
+const { protect, authorize, optionalAuth } = require('../middleware/auth');
+router.get('/', optionalAuth, getGigs);
+router.get('/my', protect, authorize('freelancer'), getMyGigs);
+router.get('/:id', optionalAuth, getGig);
+router.post('/', protect, authorize('freelancer'), createGig);
+router.put('/:id', protect, authorize('freelancer'), updateGig);
+router.delete('/:id', protect, authorize('freelancer'), deleteGig);
+router.post('/:id/order', protect, authorize('employer'), orderGig);
+module.exports = router;
